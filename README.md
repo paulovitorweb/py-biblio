@@ -1,2 +1,2 @@
 # py-biblio
-Uma aplicação que gerencia referências bibliográficas.
+Uma aplicação escrita em Python com dataclasses para gerenciar referências bibliográficas.

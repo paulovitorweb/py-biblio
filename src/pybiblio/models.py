@@ -20,7 +20,7 @@ class Author:
 
 
 @dataclass
-class Reference:
+class Publication:
     title: str
     year: int
     authors: List[Author]
@@ -37,3 +37,12 @@ class Reference:
     def reference(self) -> str:
         authors = '; '.join([author.reference for author in self.authors])
         return f'{authors}. {self.title}, {self.year}.'
+
+
+@dataclass
+class Bibliography:
+    publications: List[Publication]
+
+    def as_html(self) -> str:
+        items = ''.join([f'<li>{str(publication)}</li>' for publication in self.publications])
+        return '<ul>' + items + '</ul>'

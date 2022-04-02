@@ -9,7 +9,10 @@ def some_authors():
 
 @pytest.fixture
 def some_publications(some_authors):
-    return [Publication(1, 'A Rede Urbana', 2016, some_authors)]
+    return [
+        Publication(1, 'A Rede Urbana', 2016, some_authors),
+        Publication(2, 'Ecossistema GIS', 2020, some_authors[0:1])
+    ]
 
 
 def test_instance_author(some_authors):
@@ -31,12 +34,14 @@ def test_instance_publication(some_publications):
     assert publication.reference == 'FREITAS, Paulo de; CASTRO, Alexandre de. A Rede Urbana, 2016.'
     assert str(publication) == 'FREITAS, Paulo de; CASTRO, Alexandre de. A Rede Urbana, 2016.'
 
-def test_instance_bibliography(some_publications):
+def test_instance_bibliography(some_publications, some_authors):
     biblio = Bibliography(some_publications)
     expected_text = (
         '<ul>'
             '<li>FREITAS, Paulo de; CASTRO, Alexandre de. A Rede Urbana, 2016.</li>'
+            '<li>FREITAS, Paulo de. Ecossistema GIS, 2020.</li>'
         '</ul>'
     )
     assert biblio.as_html() == expected_text
-    assert biblio.get_authors() == [Author(1, 'Paulo de Freitas'), Author(2, 'Alexandre de Castro')]
+    authors = biblio.get_authors()
+    assert len(authors) == 2 and all(author in authors for author in some_authors)

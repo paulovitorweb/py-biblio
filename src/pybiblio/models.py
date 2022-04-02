@@ -1,5 +1,8 @@
 from dataclasses import dataclass
-from typing import List
+from typing import List, Optional, Tuple, NewType
+
+
+Pages = NewType('Pages', Tuple[int, int])
 
 
 @dataclass
@@ -51,6 +54,27 @@ class Publication:
         """Publication string as reference"""
         authors = '; '.join([author.reference for author in self.authors])
         return f'{authors}. {self.title}, {self.year}.'
+
+
+@dataclass
+class Book(Publication):
+    location: str
+    publishing_company: str
+
+    @property
+    def reference(self) -> str:
+        """Book string as reference"""
+        authors = '; '.join([author.reference for author in self.authors])
+        return f'{authors}. {self.title}. {self.location}: {self.publishing_company}, {self.year}.'
+
+
+@dataclass
+class Article(Publication):
+    location: str
+    volume: int
+    number: int
+    pages: Optional[Pages] = None
+    
 
 
 @dataclass

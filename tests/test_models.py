@@ -4,16 +4,17 @@ from src.pybiblio.models import Author, Publication, Bibliography
 
 @pytest.fixture
 def some_authors():
-    return [Author('Paulo de Freitas'), Author('Alexandre de Castro')]
+    return [Author(1, 'Paulo de Freitas'), Author(2, 'Alexandre de Castro')]
 
 
 @pytest.fixture
 def some_publications(some_authors):
-    return [Publication('A Rede Urbana', 2016, some_authors)]
+    return [Publication(1, 'A Rede Urbana', 2016, some_authors)]
 
 
 def test_instance_author(some_authors):
     author = some_authors[0]
+    assert author.id == 1
     assert author.name == 'Paulo de Freitas'
     assert author.citation == 'FREITAS'
     assert author.reference == 'FREITAS, Paulo de'
@@ -22,9 +23,10 @@ def test_instance_author(some_authors):
 
 def test_instance_publication(some_publications):
     publication = some_publications[0]
+    assert publication.id == 1
     assert publication.title == 'A Rede Urbana'
     assert publication.year == 2016
-    assert publication.authors == [Author('Paulo de Freitas'), Author('Alexandre de Castro')]
+    assert publication.authors == [Author(1, 'Paulo de Freitas'), Author(2, 'Alexandre de Castro')]
     assert publication.citation == '(FREITAS; CASTRO, 2016)'
     assert publication.reference == 'FREITAS, Paulo de; CASTRO, Alexandre de. A Rede Urbana, 2016.'
     assert str(publication) == 'FREITAS, Paulo de; CASTRO, Alexandre de. A Rede Urbana, 2016.'
@@ -37,3 +39,4 @@ def test_instance_bibliography(some_publications):
         '</ul>'
     )
     assert biblio.as_html() == expected_text
+    assert biblio.get_authors() == [Author(1, 'Paulo de Freitas'), Author(2, 'Alexandre de Castro')]

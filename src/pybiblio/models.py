@@ -4,10 +4,19 @@ from typing import List
 
 @dataclass
 class Author:
+    id: int
     name: str
 
     def __str__(self):
         return self.reference
+
+    def __eq__(self, other):
+        if not isinstance(other, Author):
+            return False
+        return self.id == other.id and self.name == other.name
+
+    def __hash__(self):
+        return hash(str(self.id) + self.name)
 
     @property
     def citation(self) -> str:
@@ -21,6 +30,7 @@ class Author:
 
 @dataclass
 class Publication:
+    id: int
     title: str
     year: int
     authors: List[Author]
@@ -46,3 +56,6 @@ class Bibliography:
     def as_html(self) -> str:
         items = ''.join([f'<li>{str(publication)}</li>' for publication in self.publications])
         return '<ul>' + items + '</ul>'
+
+    def get_authors(self) -> List[Author]:
+        return list(set([author for publication in self.publications for author in publication.authors]))

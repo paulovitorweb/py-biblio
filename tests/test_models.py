@@ -1,5 +1,5 @@
 import pytest
-from src.pybiblio.models import Author, Publication, Bibliography, Book
+from src.pybiblio.models import Author, Publication, Bibliography, Book, Article
 
 
 @pytest.fixture
@@ -7,7 +7,8 @@ def some_authors():
     return [
         Author(1, 'Paulo de Freitas'), 
         Author(2, 'Alexandre de Castro'),
-        Author(3, 'Roberto Campagni')
+        Author(3, 'Roberto Campagni'),
+        Author(4, 'Paulo Freire')
     ]
 
 
@@ -23,6 +24,13 @@ def some_publications(some_authors):
 def some_books(some_authors):
     return [
         Book(3, 'Economia urbana', 2005, some_authors[2:3], 'Barcelona', 'Ed. Antonio Bosch')
+    ]
+
+
+@pytest.fixture
+def some_articles(some_authors):
+    return [
+        Article(4, 'O transporte urbano de João Pessoa', 2008, [some_authors[3]], 4, 92, 8)
     ]
 
 
@@ -45,6 +53,7 @@ def test_instance_publication(some_authors):
     assert publication.reference == 'FREITAS, Paulo de; CASTRO, Alexandre de. A Rede Urbana, 2016.'
     assert str(publication) == 'FREITAS, Paulo de; CASTRO, Alexandre de. A Rede Urbana, 2016.'
 
+
 def test_instance_book(some_authors):
     book = Book(3, 'Economia urbana', 2005, some_authors[2:3], 'Barcelona', 'Ed. Antonio Bosch')
     assert book.id == 3
@@ -56,7 +65,22 @@ def test_instance_book(some_authors):
     assert book.citation == '(CAMPAGNI, 2005)'
     assert book.reference == 'CAMPAGNI, Roberto. Economia urbana. Barcelona: Ed. Antonio Bosch, 2005.'
     assert str(book) == 'CAMPAGNI, Roberto. Economia urbana. Barcelona: Ed. Antonio Bosch, 2005.'
-    
+
+
+def test_instance_article(some_authors):
+    article = Article(4, 'O transporte urbano de João Pessoa', 2008, [some_authors[3]], 'Minha Cidade', 4, 92, 8)
+    assert article.id == 4
+    assert article.title == 'O transporte urbano de João Pessoa'
+    assert article.year == 2008
+    assert article.authors == [Author(4, 'Paulo Freire')]
+    assert article.journal == 'Minha Cidade'
+    assert article.volume == 4
+    assert article.number == 92
+    assert article.edition_year == 8
+    assert article.citation == '(FREIRE, 2008)'
+    assert article.reference == 'FREIRE, Paulo. O transporte urbano de João Pessoa. Minha Cidade, Vol. 4, No. 92, Ano 8, 2008.'
+    assert str(article) == 'FREIRE, Paulo. O transporte urbano de João Pessoa. Minha Cidade, Vol. 4, No. 92, Ano 8, 2008.'
+
 
 def test_instance_bibliography(some_publications, some_authors):
     biblio = Bibliography(some_publications)

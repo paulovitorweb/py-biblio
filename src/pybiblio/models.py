@@ -70,10 +70,17 @@ class Book(Publication):
 
 @dataclass
 class Article(Publication):
-    location: str
+    journal: str
     volume: int
     number: int
+    edition_year: int
     pages: Optional[Pages] = None
+
+    @property
+    def reference(self) -> str:
+        """Article string as reference"""
+        authors = '; '.join([author.reference for author in self.authors])
+        return f'{authors}. {self.title}. {self.journal}, Vol. {self.volume}, No. {self.number}, Ano {self.edition_year}, {self.year}.'
     
 
 

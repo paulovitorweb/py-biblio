@@ -5,7 +5,7 @@ from typing import List, Optional, Tuple, NewType
 Pages = NewType('Pages', Tuple[int, int])
 
 
-@dataclass
+@dataclass(frozen=True)
 class Author:
     id: int
     name: str
@@ -52,8 +52,10 @@ class Publication:
     @property
     def reference(self) -> str:
         """Publication string as reference"""
-        authors = '; '.join([author.reference for author in self.authors])
-        return f'{authors}. {self.title}, {self.year}.'
+        return f'{self._authors_for_reference()}. {self.title}, {self.year}.'
+    
+    def _authors_for_reference(self) -> str:
+        return '; '.join([author.reference for author in self.authors])
 
 
 @dataclass
@@ -64,8 +66,7 @@ class Book(Publication):
     @property
     def reference(self) -> str:
         """Book string as reference"""
-        authors = '; '.join([author.reference for author in self.authors])
-        return f'{authors}. {self.title}. {self.location}: {self.publishing_company}, {self.year}.'
+        return f'{self._authors_for_reference()}. {self.title}. {self.location}: {self.publishing_company}, {self.year}.'
 
 
 @dataclass
@@ -79,7 +80,7 @@ class Article(Publication):
     @property
     def reference(self) -> str:
         """Article string as reference"""
-        authors = '; '.join([author.reference for author in self.authors])
+        authors = self._authors_for_reference()
         return f'{authors}. {self.title}. {self.journal}, Vol. {self.volume}, No. {self.number}, Ano {self.edition_year}, {self.year}.'
     
 

@@ -5,7 +5,7 @@ from typing import List, Optional, Tuple, NewType
 Pages = NewType('Pages', Tuple[int, int])
 
 
-@dataclass(frozen=True)
+@dataclass
 class Author:
     id: int
     name: str

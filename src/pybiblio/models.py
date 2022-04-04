@@ -35,10 +35,10 @@ class Author:
 
 @dataclass
 class Publication:
-    id: int
-    title: str
-    year: int
-    authors: List[Author]
+    id: int = field(default=None)
+    title: str = field(default=None)
+    year: int = field(default=None)
+    authors: List[Author] = field(default=None)
 
     def __str__(self):
         return self.reference
@@ -60,8 +60,8 @@ class Publication:
 
 @dataclass
 class Book(Publication):
-    location: str
-    publishing_company: str
+    location: str = field(default=None)
+    publishing_company: str = field(default=None)
 
     @property
     def reference(self) -> str:
@@ -71,11 +71,11 @@ class Book(Publication):
 
 @dataclass
 class Article(Publication):
-    journal: str
-    volume: int
-    number: int
-    edition_year: int
-    pages: Optional[Pages] = None
+    journal: str = field(default=None)
+    volume: int = field(default=None)
+    number: int = field(default=None)
+    edition_year: int = field(default=None)
+    pages: Optional[Pages] = field(default=None)
 
     @property
     def reference(self) -> str:

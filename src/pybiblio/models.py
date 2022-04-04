@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import List, Optional, Tuple, NewType
 
 
@@ -7,8 +7,8 @@ Pages = NewType('Pages', Tuple[int, int])
 
 @dataclass
 class Author:
-    id: int
-    name: str
+    id: int = field(default=None)
+    name: str = field(default=None)
 
     def __str__(self):
         return self.reference

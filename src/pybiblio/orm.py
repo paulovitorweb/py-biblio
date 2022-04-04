@@ -4,8 +4,8 @@ from sqlalchemy.pool import StaticPool
 from . import models
 
 in_memory_engine = create_engine(
-    "sqlite://", 
-    connect_args={"check_same_thread": False}, 
+    'sqlite://', 
+    connect_args={'check_same_thread': False}, 
     poolclass=StaticPool
 )
 
@@ -17,6 +17,5 @@ author = Table('authors', metadata,
     Column('id', Integer, primary_key=True, autoincrement=True),
     Column('name', String(128))
 )
-metadata.create_all(in_memory_engine)
 
 mapper(models.Author, author)

@@ -55,3 +55,20 @@ def test_repository_can_save_a_book(session):
 
     rows_relations = session.execute('SELECT * FROM "book_authors"')
     assert list(rows_relations) == [(1, 1)]
+
+
+def test_repository_can_retrieve_a_book(session, some_authors):
+    session.execute(
+        'INSERT INTO authors (name) VALUES '
+        '("Paulo de Freitas"),'
+        '("Alexandre de Castro")'
+    )
+    session.execute(
+        'INSERT INTO books (title, year, location, publishing_company) VALUES '
+        '("A Rede Urbana", 2016, "João Pessoa", "Wordpress")'
+    )
+    session.execute('INSERT INTO book_authors (book_id, author_id) VALUES (1, 1), (1, 2)')
+
+    repo = repository.BookRepository(session)
+    book = repo.get(1)
+    assert book == models.Book(1, 'A Rede Urbana', 2016, some_authors[0:2], 'João Pessoa', 'Wordpress')

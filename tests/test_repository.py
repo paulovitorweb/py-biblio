@@ -41,6 +41,27 @@ def test_repository_can_retrieve_all_authors(session):
 
 
 def test_repository_can_save_a_book(session):
+    session.execute(
+        'INSERT INTO authors (name) VALUES '
+        '("Roberto Campagni")'
+    )
+    book = models.Book(None, 'Economia urbana', 2005, [repository.AuthorRepository(session).get(1)], 'Barcelona', 'Ed. Antonio Bosch')
+
+    repo = repository.BookRepository(session)
+    repo.add(book)
+    session.commit()
+
+    rows_books = session.execute('SELECT * FROM "books"')
+    assert list(rows_books) == [(1, 'Economia urbana', 2005, 'Barcelona', 'Ed. Antonio Bosch')]
+
+    rows_authors = session.execute('SELECT * FROM "authors"')
+    assert list(rows_authors) == [(1, 'Roberto Campagni')]
+
+    rows_relations = session.execute('SELECT * FROM "book_authors"')
+    assert list(rows_relations) == [(1, 1)]
+
+
+def test_repository_can_save_a_book_and_related_authors(session):
     book = models.Book(None, 'Economia urbana', 2005, [models.Author(name='Roberto Campagni')], 'Barcelona', 'Ed. Antonio Bosch')
 
     repo = repository.BookRepository(session)

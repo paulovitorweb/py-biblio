@@ -1,5 +1,6 @@
 import pytest
 from src.pybiblio.models import Author, Publication, Bibliography, Book, Article
+from tests.utils import lists_are_equal
 
 
 @pytest.fixture
@@ -93,7 +94,3 @@ def test_instance_bibliography(some_publications, some_authors):
     assert biblio.as_html() == expected_text
     authors = biblio.get_authors()
     assert lists_are_equal(authors, some_authors[0:2])
-
-
-def lists_are_equal(list1: list, list2: list) -> bool:
-    return len(list1) == len(list2) and all(el in list1 for el in list2)

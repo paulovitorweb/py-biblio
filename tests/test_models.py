@@ -36,7 +36,7 @@ def test_instance_book(some_authors):
 
 
 def test_instance_article(some_authors):
-    article = Article(4, 'O transporte urbano de João Pessoa', 2008, [some_authors[3]], 'Minha Cidade', 4, 92, 8)
+    article = Article(4, 'O transporte urbano de João Pessoa', 2008, [some_authors[3]], 'Minha Cidade', 4, 92, 8, (82, 102))
     assert article.id == 4
     assert article.title == 'O transporte urbano de João Pessoa'
     assert article.year == 2008
@@ -46,8 +46,8 @@ def test_instance_article(some_authors):
     assert article.number == 92
     assert article.edition_year == 8
     assert article.citation == '(FREIRE, 2008)'
-    assert article.reference == 'FREIRE, Paulo. O transporte urbano de João Pessoa. Minha Cidade, Vol. 4, No. 92, Ano 8, 2008.'
-    assert str(article) == 'FREIRE, Paulo. O transporte urbano de João Pessoa. Minha Cidade, Vol. 4, No. 92, Ano 8, 2008.'
+    assert article.reference == 'FREIRE, Paulo. O transporte urbano de João Pessoa. Minha Cidade, Vol. 4, No. 92, Ano 8, 2008. p. 82-102.'
+    assert str(article) == 'FREIRE, Paulo. O transporte urbano de João Pessoa. Minha Cidade, Vol. 4, No. 92, Ano 8, 2008. p. 82-102.'
 
 
 def test_instance_bibliography(some_publications, some_authors):

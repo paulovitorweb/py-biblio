@@ -81,7 +81,8 @@ class Article(Publication):
     def reference(self) -> str:
         """Article string as reference"""
         authors = self._authors_for_reference()
-        return f'{authors}. {self.title}. {self.journal}, Vol. {self.volume}, No. {self.number}, Ano {self.edition_year}, {self.year}.'
+        ref = f'{authors}. {self.title}. {self.journal}, Vol. {self.volume}, No. {self.number}, Ano {self.edition_year}, {self.year}.'
+        return ref if not self.pages else ref + f' p. {self.pages[0]}-{self.pages[1]}.'
     
 
 

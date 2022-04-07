@@ -1,7 +1,7 @@
 import abc
 from typing import List
 from sqlalchemy.orm import Session
-from src.pybiblio.domain.models import Author, Book
+from src.pybiblio.domain.models import Author, Book, Article
 
 
 class AbstractRepository(abc.ABC):
@@ -11,6 +11,10 @@ class AbstractRepository(abc.ABC):
 
     @abc.abstractmethod
     def get(self, id):
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def list(self):
         raise NotImplementedError
 
 
@@ -46,3 +50,20 @@ class BookRepository(AbstractRepository):
     def list(self) -> List[Book]:
         """Retrieve all books from the database"""
         return self.session.query(Book).all()
+
+
+class ArticleRepository(AbstractRepository):
+    def __init__(self, session: Session):
+        self.session = session
+
+    def add(self, article: Article):
+        """Add a article to the database"""
+        self.session.add(article)
+
+    def get(self, id) -> Article:
+        """Retrieve a article from the database by id"""
+        return self.session.query(Article).filter_by(id=id).one()
+
+    def list(self) -> List[Article]:
+        """Retrieve all articles from the database"""
+        return self.session.query(Article).all()

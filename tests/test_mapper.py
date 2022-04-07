@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from src.pybiblio.models import Author, Book
+from src.pybiblio.domain.models import Author, Book
 
 
 def test_author_mapper_can_load_authors(session: Session):

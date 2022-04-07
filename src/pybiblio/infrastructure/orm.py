@@ -1,7 +1,7 @@
 from sqlalchemy import Table, MetaData, Column, Integer, String, ForeignKey, create_engine
 from sqlalchemy.orm import mapper, sessionmaker, relationship
 from sqlalchemy.pool import StaticPool
-from . import models
+from ..domain import models
 
 in_memory_engine = create_engine(
     'sqlite://', 

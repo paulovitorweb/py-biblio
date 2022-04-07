@@ -1,7 +1,7 @@
 import abc
 from typing import List
 from sqlalchemy.orm import Session
-from src.pybiblio.models import Author, Book
+from src.pybiblio.domain.models import Author, Book
 
 
 class AbstractRepository(abc.ABC):

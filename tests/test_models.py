@@ -1,4 +1,4 @@
-from src.pybiblio.models import Author, Publication, Bibliography, Book, Article
+from src.pybiblio.domain.models import Author, Publication, Bibliography, Book, Article
 from tests.utils import lists_are_equal
 
 

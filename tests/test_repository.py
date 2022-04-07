@@ -1,5 +1,5 @@
-from src.pybiblio import models
-from src.pybiblio import repository
+from src.pybiblio.domain import models
+from src.pybiblio.infrastructure import repository
 
 
 def test_repository_can_save_an_author(session):

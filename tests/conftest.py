@@ -1,6 +1,6 @@
 import pytest
-from src.pybiblio.orm import InMemorySession, in_memory_engine, metadata
-from src.pybiblio.models import Author, Publication, Book, Article
+from src.pybiblio.infrastructure.orm import InMemorySession, in_memory_engine, metadata
+from src.pybiblio.domain.models import Author, Publication, Book, Article
 
 
 @pytest.fixture

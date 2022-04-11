@@ -1,5 +1,5 @@
 from sqlalchemy import Table, MetaData, Column, Integer, String, ForeignKey, types, create_engine
-from sqlalchemy.orm import mapper, sessionmaker, relationship
+from sqlalchemy.orm import mapper, sessionmaker, relationship, Session
 from sqlalchemy.pool import StaticPool
 from ..domain import models
 
@@ -17,15 +17,23 @@ class Pages(types.TypeDecorator):
             return int(start), int(end)
 
 
+# Db for tests
 in_memory_engine = create_engine(
     'sqlite://', 
     connect_args={'check_same_thread': False}, 
     poolclass=StaticPool
 )
-
 InMemorySession = sessionmaker(bind=in_memory_engine)
 
-metadata = MetaData()
+
+engine = create_engine(
+    'sqlite:///database.db', 
+    connect_args={'check_same_thread': False}
+)
+DbSession = sessionmaker(bind=engine)
+
+
+metadata = MetaData() 
 
 author = Table('authors', metadata,
     Column('id', Integer, primary_key=True, autoincrement=True),
@@ -73,3 +81,7 @@ mapper(models.Book, book, properties={
 mapper(models.Article, article, properties={
     'authors': relationship(models.Author, secondary=association_article_authors, back_populates='articles')
 })
+
+
+def init_db():
+    metadata.create_all(engine)

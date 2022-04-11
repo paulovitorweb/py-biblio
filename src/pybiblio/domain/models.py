@@ -1,5 +1,6 @@
 from dataclasses import dataclass, field
 from typing import List, Optional, Tuple, NewType
+from sqlalchemy import orm
 
 
 Pages = NewType('Pages', Tuple[int, int])
@@ -9,7 +10,14 @@ Pages = NewType('Pages', Tuple[int, int])
 class Author:
     id: int = field(default=None)
     name: str = field(default=None)
+    citation: str = field(init=False)
+    reference: str = field(init=False)
 
+    @orm.reconstructor
+    def __post_init__(self):
+        self.citation = self._get_citation()
+        self.reference = self._get_reference()
+    
     def __str__(self):
         return self.reference
 
@@ -21,13 +29,11 @@ class Author:
     def __hash__(self):
         return hash(str(self.id) + self.name)
 
-    @property
-    def citation(self) -> str:
+    def _get_citation(self) -> str:
         """Author string as citation"""
         return self.name.strip().split()[-1].upper()
 
-    @property
-    def reference(self) -> str:
+    def _get_reference(self) -> str:
         """Author string as reference"""
         name, _, last_name = self.name.strip().rpartition(' ')
         return f'{last_name.upper()}, {name}'
@@ -39,18 +45,23 @@ class Publication:
     title: str = field(default=None)
     year: int = field(default=None)
     authors: List[Author] = field(default=None)
+    citation: str = field(init=False)
+    reference: str = field(init=False)
+
+    @orm.reconstructor
+    def __post_init__(self):
+        self.citation = self._get_citation()
+        self.reference = self._get_reference()
 
     def __str__(self):
         return self.reference
 
-    @property
-    def citation(self) -> str:
+    def _get_citation(self) -> str:
         """Publication string as citation"""
         authors = '; '.join([author.citation for author in self.authors])
         return f'({authors}, {self.year})'
 
-    @property
-    def reference(self) -> str:
+    def _get_reference(self) -> str:
         """Publication string as reference"""
         return f'{self._authors_for_reference()}. {self.title}, {self.year}.'
     
@@ -63,8 +74,7 @@ class Book(Publication):
     location: str = field(default=None)
     publishing_company: str = field(default=None)
 
-    @property
-    def reference(self) -> str:
+    def _get_reference(self) -> str:
         """Book string as reference"""
         return f'{self._authors_for_reference()}. {self.title}. {self.location}: {self.publishing_company}, {self.year}.'
 
@@ -77,8 +87,7 @@ class Article(Publication):
     edition_year: int = field(default=None)
     pages: Optional[Pages] = field(default=None)
 
-    @property
-    def reference(self) -> str:
+    def _get_reference(self) -> str:
         """Article string as reference"""
         authors = self._authors_for_reference()
         ref = f'{authors}. {self.title}. {self.journal}, Vol. {self.volume}, No. {self.number}, Ano {self.edition_year}, {self.year}.'

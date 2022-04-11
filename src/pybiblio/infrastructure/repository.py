@@ -28,7 +28,7 @@ class AuthorRepository(AbstractRepository):
 
     def get(self, id) -> Author:
         """Retrieve an author from the database by id"""
-        return self.session.query(Author).filter_by(id=id).one()
+        return self.session.query(Author).filter_by(id=id).first()
 
     def list(self) -> List[Author]:
         """Retrieve all authors from the database"""
@@ -45,7 +45,7 @@ class BookRepository(AbstractRepository):
 
     def get(self, id) -> Book:
         """Retrieve a book from the database by id"""
-        return self.session.query(Book).filter_by(id=id).one()
+        return self.session.query(Book).filter_by(id=id).first()
 
     def list(self) -> List[Book]:
         """Retrieve all books from the database"""
@@ -62,7 +62,7 @@ class ArticleRepository(AbstractRepository):
 
     def get(self, id) -> Article:
         """Retrieve a article from the database by id"""
-        return self.session.query(Article).filter_by(id=id).one()
+        return self.session.query(Article).filter_by(id=id).first()
 
     def list(self) -> List[Article]:
         """Retrieve all articles from the database"""

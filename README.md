@@ -21,14 +21,32 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### Documentação
+### Suba a API
 
-Para acessar a documentação da API:
+```
+make dev
+```
+
+Ou, sem Makefile:
+
+```
+uvicorn src.pybiblio.api.main:app --reload
+```
+
+### Documentação
 
 - Com Swagger: http://127.0.0.1:8000/docs
 - Com ReDoc: http://127.0.0.1:8000/redoc
 
 ### Teste
+
+Um conjunto de testes pode ser encontrado em `/tests`. Para executá-los, instale também as dependências de desenvolvimento:
+
+```
+pip install -r dev-requirements.txt
+```
+
+E, em seguida, execute:
 
 ```
 pytest

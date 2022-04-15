@@ -54,3 +54,59 @@ def test_get_book_should_raise_error(mocker):
     mocker.patch.object(repository.BookRepository, 'get', return_value=None)
     with pytest.raises(HTTPException):
         views.get_book(db, 1)
+
+
+def test_create_book_should_succeed(mocker):
+    db = mocker.MagicMock()
+    book_create = schemas.BookCreate(
+        title='Vidas Secas',
+        year=1938,
+        publishing_company='Editora Record',
+        location='São Paulo',
+        authors=[10],
+    )
+
+    def refresh_book(book):
+        book.id = 7
+
+    db.refresh.side_effect = refresh_book
+    mocker.patch.object(
+        repository.AuthorRepository, 'get', return_value=Author(10, 'Graciliano Ramos')
+    )
+    add_method = mocker.patch.object(repository.BookRepository, 'add')
+
+    book = views.create_book(db, book_create)
+    add_method.assert_called_once()
+    db.commit.assert_called_once()
+    db.refresh.assert_called_once()
+    assert book == Book(
+        id=7,
+        title='Vidas Secas',
+        year=1938,
+        publishing_company='Editora Record',
+        location='São Paulo',
+        authors=[Author(10, 'Graciliano Ramos')],
+    )
+
+
+def test_create_book_should_raise_error_if_any_author_does_not_exist(mocker):
+    db = mocker.MagicMock()
+    book_create = schemas.BookCreate(
+        title='Vidas Secas',
+        year=1938,
+        publishing_company='Editora Record',
+        location='São Paulo',
+        authors=[10, 11],
+    )
+
+    mocker.patch.object(
+        repository.AuthorRepository, 'get', side_effect=[Author(10, 'Graciliano Ramos'), None]
+    )
+    add_method = mocker.patch.object(repository.BookRepository, 'add')
+
+    with pytest.raises(HTTPException) as e:
+        views.create_book(db, book_create)
+
+    add_method.assert_not_called()
+    assert e.value.args[0] == 422
+    assert e.value.args[1] == 'Author with id 11 not found'

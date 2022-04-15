@@ -29,3 +29,25 @@ def get_book(db: Session, book_id: int):
     if book is None:
         raise HTTPException(status_code=404, detail='Book not found')
     return book
+
+
+def create_book(db: Session, book: schemas.BookCreate):
+    authors = []
+
+    for author_id in book.authors:
+        author = repository.AuthorRepository(session=db).get(author_id)
+        if not author:
+            raise HTTPException(422, f'Author with id {author_id} not found')
+        authors.append(author)
+
+    db_book = Book(
+        title=book.title,
+        year=book.year,
+        authors=authors,
+        location=book.location,
+        publishing_company=book.publishing_company,
+    )
+    repository.BookRepository(session=db).add(db_book)
+    db.commit()
+    db.refresh(db_book)
+    return db_book

@@ -110,3 +110,10 @@ def test_create_book_should_raise_error_if_any_author_does_not_exist(mocker):
     add_method.assert_not_called()
     assert e.value.args[0] == 422
     assert e.value.args[1] == 'Author with id 11 not found'
+
+
+def test_get_all_books_should_succeed(mocker, some_books):
+    db = mocker.MagicMock()
+    mocked_books = some_books
+    mocker.patch.object(repository.BookRepository, 'list', return_value=mocked_books)
+    assert views.get_books(db) == mocked_books

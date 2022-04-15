@@ -1,7 +1,7 @@
 import pytest
 from fastapi import HTTPException
 from src.pybiblio.infrastructure import repository
-from src.pybiblio.domain.models import Author
+from src.pybiblio.domain.models import Author, Book
 from src.pybiblio.api import views
 from src.pybiblio.api import schemas
 
@@ -41,3 +41,16 @@ def test_get_all_authors_should_succeed(mocker):
     mocked_authors = [Author(1, 'Euclides da Cunha'), Author(2, 'Graciliano Ramos')]
     mocker.patch.object(repository.AuthorRepository, 'list', return_value=mocked_authors)
     assert views.get_authors(db) == mocked_authors
+
+
+def test_get_book_should_succeed(mocker, some_books):
+    db = mocker.MagicMock()
+    mocker.patch.object(repository.BookRepository, 'get', return_value=some_books[0])
+    assert views.get_book(db, 1) == some_books[0]
+
+
+def test_get_book_should_raise_error(mocker):
+    db = mocker.MagicMock()
+    mocker.patch.object(repository.BookRepository, 'get', return_value=None)
+    with pytest.raises(HTTPException):
+        views.get_book(db, 1)

@@ -1,7 +1,7 @@
 from fastapi import HTTPException
 from src.pybiblio.infrastructure import repository
 from src.pybiblio.infrastructure.orm import Session
-from src.pybiblio.domain.models import Author
+from src.pybiblio.domain.models import Author, Book
 from . import schemas
 
 
@@ -22,3 +22,10 @@ def create_author(db: Session, author: schemas.AuthorCreate):
 
 def get_authors(db: Session):
     return repository.AuthorRepository(session=db).list()
+
+
+def get_book(db: Session, book_id: int):
+    book = repository.BookRepository(session=db).get(book_id)
+    if book is None:
+        raise HTTPException(status_code=404, detail='Book not found')
+    return book

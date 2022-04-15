@@ -18,3 +18,7 @@ def create_author(db: Session, author: schemas.AuthorCreate):
     db.commit()
     db.refresh(db_author)
     return db_author
+
+
+def get_authors(db: Session):
+    return repository.AuthorRepository(session=db).list()

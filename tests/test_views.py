@@ -34,3 +34,10 @@ def test_create_author_should_succeed(mocker):
     db.commit.assert_called_once()
     db.refresh.assert_called_once()
     assert author == Author(2, name='Son Goku')
+
+
+def test_get_all_authors_should_succeed(mocker):
+    db = mocker.MagicMock()
+    mocked_authors = [Author(1, 'Euclides da Cunha'), Author(2, 'Graciliano Ramos')]
+    mocker.patch.object(repository.AuthorRepository, 'list', return_value=mocked_authors)
+    assert views.get_authors(db) == mocked_authors

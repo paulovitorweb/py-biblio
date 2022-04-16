@@ -1,4 +1,5 @@
 # py-biblio
+[![Main workflow](https://github.com/paulovitorweb/py-biblio/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/paulovitorweb/py-biblio/actions/workflows/main.yml)
 
 Uma aplicação escrita em Python com dataclasses para gerenciar referências bibliográficas.
 
@@ -49,5 +50,13 @@ pip install -r dev-requirements.txt
 E, em seguida, execute:
 
 ```
-pytest
+make test
+```
+
+### Lint
+
+Certifique-se de que usou boas práticas de escrita do código.
+
+```
+make lint
 ```

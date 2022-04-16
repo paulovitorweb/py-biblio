@@ -1,7 +1,7 @@
 #
 # Run api for development
 dev:
-	uvicorn src.pybiblio.api.main:app --
+	uvicorn src.pybiblio.api.main:app --reload
 
 #
 # Run tests

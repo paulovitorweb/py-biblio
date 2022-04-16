@@ -1,3 +1,4 @@
+import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -11,9 +12,6 @@ engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={'check_same_thread
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
-metadata.create_all(bind=engine)
-
-
 def override_get_db():
     try:
         db = TestingSessionLocal()
@@ -24,8 +22,6 @@ def override_get_db():
 
 app.dependency_overrides[get_db] = override_get_db
 
-client = TestClient(app)
-
 
 class TestContext:
     author_id: int
@@ -33,7 +29,16 @@ class TestContext:
     book_id: int
 
 
+client = TestClient(app)
 context = TestContext()
+
+
+# at each test cycle the database will be created and deleted at the end
+@pytest.fixture(scope='session', autouse=True)
+def db_setup(request):
+    metadata.create_all(bind=engine)
+    yield
+    metadata.drop_all(bind=engine)
 
 
 def test_api_create_author():

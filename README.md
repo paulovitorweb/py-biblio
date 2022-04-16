@@ -1,4 +1,5 @@
 # py-biblio
+
 [![Main workflow](https://github.com/paulovitorweb/py-biblio/workflows/Main%20workflow/badge.svg)](https://github.com/paulovitorweb/py-biblio/actions/workflows/main.yml)
 
 Uma aplicação escrita em Python com dataclasses para gerenciar referências bibliográficas.
@@ -52,6 +53,8 @@ E, em seguida, execute:
 ```
 make test
 ```
+
+Visualize um relatório da cobertura de testes em `htmlcov/index.html`.
 
 ### Lint
 

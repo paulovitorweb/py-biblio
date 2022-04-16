@@ -52,7 +52,7 @@ def create_book(book: schemas.BookCreate, db: Session = Depends(get_db)):
     return views.create_book(db, book=book)
 
 
-def custom_openapi():
+def custom_openapi():  # pragma: no cover
     if app.openapi_schema:
         return app.openapi_schema
     openapi_schema = get_openapi(

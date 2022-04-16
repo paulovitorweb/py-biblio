@@ -6,7 +6,7 @@ dev:
 #
 # Run tests
 test:
-	pytest
+	pytest --cov=src --cov-report=html
 
 #
 # Run lint

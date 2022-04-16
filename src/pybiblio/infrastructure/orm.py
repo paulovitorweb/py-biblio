@@ -19,46 +19,51 @@ class Pages(types.TypeDecorator):
 
 # Db for tests
 in_memory_engine = create_engine(
-    'sqlite://', 
-    connect_args={'check_same_thread': False}, 
-    poolclass=StaticPool
+    'sqlite://', connect_args={'check_same_thread': False}, poolclass=StaticPool
 )
 InMemorySession = sessionmaker(bind=in_memory_engine)
 
 
-engine = create_engine(
-    'sqlite:///database.db', 
-    connect_args={'check_same_thread': False}
-)
+engine = create_engine('sqlite:///database.db', connect_args={'check_same_thread': False})
 DbSession = sessionmaker(bind=engine)
 
 
-metadata = MetaData() 
+metadata = MetaData()
 
-author = Table('authors', metadata,
+author = Table(
+    'authors',
+    metadata,
     Column('id', Integer, primary_key=True, autoincrement=True),
-    Column('name', String(128))
+    Column('name', String(128)),
 )
 
-association_book_authors = Table('book_authors', metadata,
+association_book_authors = Table(
+    'book_authors',
+    metadata,
     Column('book_id', ForeignKey('books.id')),
-    Column('author_id', ForeignKey('authors.id'))
+    Column('author_id', ForeignKey('authors.id')),
 )
 
-book = Table('books', metadata,
+book = Table(
+    'books',
+    metadata,
     Column('id', Integer, primary_key=True, autoincrement=True),
     Column('title', String(256)),
     Column('year', Integer),
     Column('location', String(64)),
-    Column('publishing_company', String(64))
+    Column('publishing_company', String(64)),
 )
 
-association_article_authors = Table('article_authors', metadata,
+association_article_authors = Table(
+    'article_authors',
+    metadata,
     Column('article_id', ForeignKey('articles.id')),
-    Column('author_id', ForeignKey('authors.id'))
+    Column('author_id', ForeignKey('authors.id')),
 )
 
-article = Table('articles', metadata,
+article = Table(
+    'articles',
+    metadata,
     Column('id', Integer, primary_key=True, autoincrement=True),
     Column('title', String(256)),
     Column('year', Integer),
@@ -66,21 +71,41 @@ article = Table('articles', metadata,
     Column('volume', Integer),
     Column('number', Integer),
     Column('edition_year', Integer),
-    Column('pages', Pages)
+    Column('pages', Pages),
 )
 
-mapper(models.Author, author, properties={
-    'books': relationship(models.Book, secondary=association_book_authors, back_populates='authors'),
-    'articles': relationship(models.Article, secondary=association_article_authors, back_populates='authors')
-})
+mapper(
+    models.Author,
+    author,
+    properties={
+        'books': relationship(
+            models.Book, secondary=association_book_authors, back_populates='authors'
+        ),
+        'articles': relationship(
+            models.Article, secondary=association_article_authors, back_populates='authors'
+        ),
+    },
+)
 
-mapper(models.Book, book, properties={
-    'authors': relationship(models.Author, secondary=association_book_authors, back_populates='books')
-})
+mapper(
+    models.Book,
+    book,
+    properties={
+        'authors': relationship(
+            models.Author, secondary=association_book_authors, back_populates='books'
+        )
+    },
+)
 
-mapper(models.Article, article, properties={
-    'authors': relationship(models.Author, secondary=association_article_authors, back_populates='articles')
-})
+mapper(
+    models.Article,
+    article,
+    properties={
+        'authors': relationship(
+            models.Author, secondary=association_article_authors, back_populates='articles'
+        )
+    },
+)
 
 
 def init_db():

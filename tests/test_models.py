@@ -31,12 +31,24 @@ def test_instance_book(some_authors):
     assert book.location == 'Barcelona'
     assert book.publishing_company == 'Ed. Antonio Bosch'
     assert book.citation == '(CAMPAGNI, 2005)'
-    assert book.reference == 'CAMPAGNI, Roberto. Economia urbana. Barcelona: Ed. Antonio Bosch, 2005.'
+    assert (
+        book.reference == 'CAMPAGNI, Roberto. Economia urbana. Barcelona: Ed. Antonio Bosch, 2005.'
+    )
     assert str(book) == 'CAMPAGNI, Roberto. Economia urbana. Barcelona: Ed. Antonio Bosch, 2005.'
 
 
 def test_instance_article(some_authors):
-    article = Article(4, 'O transporte urbano de João Pessoa', 2008, [some_authors[3]], 'Minha Cidade', 4, 92, 8, (82, 102))
+    article = Article(
+        4,
+        'O transporte urbano de João Pessoa',
+        2008,
+        [some_authors[3]],
+        'Minha Cidade',
+        4,
+        92,
+        8,
+        (82, 102),
+    )
     assert article.id == 4
     assert article.title == 'O transporte urbano de João Pessoa'
     assert article.year == 2008
@@ -46,16 +58,22 @@ def test_instance_article(some_authors):
     assert article.number == 92
     assert article.edition_year == 8
     assert article.citation == '(FREIRE, 2008)'
-    assert article.reference == 'FREIRE, Paulo. O transporte urbano de João Pessoa. Minha Cidade, Vol. 4, No. 92, Ano 8, 2008. p. 82-102.'
-    assert str(article) == 'FREIRE, Paulo. O transporte urbano de João Pessoa. Minha Cidade, Vol. 4, No. 92, Ano 8, 2008. p. 82-102.'
+    assert (
+        article.reference
+        == 'FREIRE, Paulo. O transporte urbano de João Pessoa. Minha Cidade, Vol. 4, No. 92, Ano 8, 2008. p. 82-102.'
+    )
+    assert (
+        str(article)
+        == 'FREIRE, Paulo. O transporte urbano de João Pessoa. Minha Cidade, Vol. 4, No. 92, Ano 8, 2008. p. 82-102.'
+    )
 
 
 def test_instance_bibliography(some_publications, some_authors):
     biblio = Bibliography(some_publications)
     expected_text = (
         '<ul>'
-            '<li>FREITAS, Paulo de; CASTRO, Alexandre de. A Rede Urbana, 2016.</li>'
-            '<li>FREITAS, Paulo de. Ecossistema GIS, 2020.</li>'
+        '<li>FREITAS, Paulo de; CASTRO, Alexandre de. A Rede Urbana, 2016.</li>'
+        '<li>FREITAS, Paulo de. Ecossistema GIS, 2020.</li>'
         '</ul>'
     )
     assert biblio.as_html() == expected_text

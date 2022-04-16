@@ -17,7 +17,7 @@ class Author:
     def __post_init__(self):
         self.citation = self._get_citation()
         self.reference = self._get_reference()
-    
+
     def __str__(self):
         return self.reference
 
@@ -64,7 +64,7 @@ class Publication:
     def _get_reference(self) -> str:
         """Publication string as reference"""
         return f'{self._authors_for_reference()}. {self.title}, {self.year}.'
-    
+
     def _authors_for_reference(self) -> str:
         return '; '.join([author.reference for author in self.authors])
 
@@ -90,9 +90,11 @@ class Article(Publication):
     def _get_reference(self) -> str:
         """Article string as reference"""
         authors = self._authors_for_reference()
-        ref = f'{authors}. {self.title}. {self.journal}, Vol. {self.volume}, No. {self.number}, Ano {self.edition_year}, {self.year}.'
+        ref = (
+            f'{authors}. {self.title}. {self.journal}, Vol. {self.volume}, No. {self.number}, '
+            f'Ano {self.edition_year}, {self.year}.'
+        )
         return ref if not self.pages else ref + f' p. {self.pages[0]}-{self.pages[1]}.'
-    
 
 
 @dataclass
@@ -106,4 +108,6 @@ class Bibliography:
 
     def get_authors(self) -> List[Author]:
         """Authors in the bibliography, no duplicates"""
-        return list(set([author for publication in self.publications for author in publication.authors]))
+        return list(
+            set([author for publication in self.publications for author in publication.authors])
+        )

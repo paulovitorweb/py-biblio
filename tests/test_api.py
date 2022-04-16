@@ -75,7 +75,7 @@ def test_api_get_author():
 
 
 def test_api_get_author_with_invalid_id():
-    response = client.get(f'/authors/0')
+    response = client.get('/authors/0')
     assert response.status_code == 404
 
 

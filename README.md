@@ -1,5 +1,5 @@
 # py-biblio
-[![Main workflow](https://github.com/paulovitorweb/py-biblio/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/paulovitorweb/py-biblio/actions/workflows/main.yml)
+[![Main workflow](https://github.com/paulovitorweb/py-biblio/workflows/Main%20workflow/badge.svg)](https://github.com/paulovitorweb/py-biblio/actions/workflows/main.yml)
 
 Uma aplicação escrita em Python com dataclasses para gerenciar referências bibliográficas.
 

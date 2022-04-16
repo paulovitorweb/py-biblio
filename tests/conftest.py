@@ -1,7 +1,19 @@
 import pytest
 from src.pybiblio.infrastructure.orm import InMemorySession, in_memory_engine, metadata
 from src.pybiblio.domain.models import Author, Publication, Book, Article
-from src.pybiblio.api import schemas
+
+
+@pytest.fixture
+def some_names():
+    return [
+        'Machado de Assis',
+        'Ruth Rocha',
+        'Graciliano Ramos',
+        'Cecília Meireles',
+        'Monteiro Lobato',
+        'Conceição Evaristo',
+        'Milton Santos',
+    ]
 
 
 @pytest.fixture
